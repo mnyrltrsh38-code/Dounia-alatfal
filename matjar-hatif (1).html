@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>متجر الهواتف النقالة</title>
+<style>
+body{font-family:Arial,sans-serif;margin:0;background:#f4f6f8;color:#222}
+header{background:#0d6efd;color:white;text-align:center;padding:22px}
+header h1{margin:0;font-size:28px}
+.container{max-width:900px;margin:auto;padding:15px}
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px}
+.card{background:white;border-radius:14px;padding:15px;text-align:center;box-shadow:0 2px 8px #ccc}
+.card .phone{font-size:65px}
+.price{font-size:20px;font-weight:bold;color:#0d6efd;margin:10px}
+button{border:0;border-radius:8px;padding:11px 16px;background:#0d6efd;color:white;cursor:pointer}
+#cart{background:white;border-radius:14px;padding:15px;margin-top:20px;box-shadow:0 2px 8px #ccc}
+.whatsapp{background:#20b958;width:100%;font-size:18px;margin-top:10px}
+input{width:100%;padding:12px;box-sizing:border-box;margin:7px 0;border:1px solid #ddd;border-radius:8px}
+</style>
+</head>
+<body>
+<header><h1>📱 متجر الهواتف النقالة</h1><p>هواتف وإكسسوارات بأسعار مناسبة</p></header>
+<div class="container">
+<h2>المنتجات</h2>
+<div class="products">
+<div class="card"><div class="phone">📱</div><h3>هاتف ذكي A</h3><div class="price">35,000 دج</div><button onclick="add('هاتف ذكي A',35000)">أضف للسلة</button></div>
+<div class="card"><div class="phone">📱</div><h3>هاتف ذكي B</h3><div class="price">48,000 دج</div><button onclick="add('هاتف ذكي B',48000)">أضف للسلة</button></div>
+<div class="card"><div class="phone">🎧</div><h3>سماعات بلوتوث</h3><div class="price">2,500 دج</div><button onclick="add('سماعات بلوتوث',2500)">أضف للسلة</button></div>
+</div>
+
+<div id="cart">
+<h2>🛒 سلة الطلب</h2>
+<div id="items">السلة فارغة</div>
+<h3 id="total">المجموع: 0 دج</h3>
+<input id="name" placeholder="اسمك">
+<input id="address" placeholder="العنوان">
+<button class="whatsapp" onclick="order()">📲 إرسال الطلب عبر واتساب</button>
+</div>
+</div>
+
+<script>
+let cart=[];
+function add(name,price){cart.push({name,price});show();}
+function show(){
+ let box=document.getElementById('items');
+ if(!cart.length){box.innerHTML='السلة فارغة';}
+ else{box.innerHTML=cart.map((x,i)=>`${i+1}. ${x.name} — ${x.price.toLocaleString()} دج`).join('<br>');}
+ document.getElementById('total').textContent='المجموع: '+cart.reduce((s,x)=>s+x.price,0).toLocaleString()+' دج';
+}
+function order(){
+ if(!cart.length){alert('أضف منتجاً إلى السلة أولاً');return;}
+ let name=document.getElementById('name').value||'غير محدد';
+ let address=document.getElementById('address').value||'غير محدد';
+ let text='طلب جديد%0Aالاسم: '+encodeURIComponent(name)+'%0Aالعنوان: '+encodeURIComponent(address)+'%0Aالمنتجات:%0A'+
+ cart.map(x=>encodeURIComponent(x.name)+' - '+x.price+' دج').join('%0A')+
+ '%0Aالمجموع: '+cart.reduce((s,x)=>s+x.price,0)+' دج';
+ window.open('https://wa.me/213674456415?text='+text,'_blank');
+}
+</script>
+</body>
+</html>
